@@ -1,2 +1,2 @@
-# cit-researchcomputing
-SUNY Geneseo CIT Research Computing public code and scripts
+# researchcomputing
+SUNY Geneseo Research Computing public code, scripts, collaboration
