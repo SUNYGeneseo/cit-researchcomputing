@@ -27,10 +27,11 @@ def coalesce_srt(input_file, output_file):
 
         # we are sure speaker_match has both named groups
         speaker_num = int(speaker_match.group('speaker_identifier')) + 1
+        speaker_identifier = f'{speaker_num:02}'
         if speaker_num > speaker_max:
             speaker_max = speaker_num
-        speaker_identifier = speaker_match.group('speaker_identifier')
         spoken_content = speaker_match.group('spoken_content')
+        subtitle.content = f'[SPEAKER_{speaker_identifier}]: {spoken_content}'
 
     
         # skip the first one
@@ -41,11 +42,11 @@ def coalesce_srt(input_file, output_file):
         # Determine if this speaker is the same as the previous speaker
         #print(f'looking for match between {srt_input[index-1].content} and {srt_input[index].content}')
         previous_speaker_match = re.match(speaker_pattern, srt_input[index-1].content)
-        if previous_speaker_match and previous_speaker_match.group('speaker_identifier') == speaker_match.group('speaker_identifier'):
+        if previous_speaker_match and previous_speaker_match.group('speaker_identifier') == speaker_identifier:
             # they are the same. update the last element of srt_output
             #   with the new ending timestamp and spoken content
             srt_output[-1].end = subtitle.end
-            srt_output[-1].content += '\n' + speaker_match.group('spoken_content')
+            srt_output[-1].content += '\n' + spoken_content
     
         else:
             # they are not the same
